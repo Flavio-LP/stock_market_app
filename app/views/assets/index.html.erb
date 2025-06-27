@@ -1,0 +1,21 @@
+<h1>Query Asset</h1>
+
+<%= form_with url: "/", method: :get do |form| %>
+  <%= form.label :symbol, "Enter stock or real estate fund symbol:" %>
+  <%= form.text_field :symbol %>
+  <%= form.submit "Query" %>
+<% end %>
+
+<% if @data && @data["Global Quote"] %>
+  <h2><%= @symbol %></h2>
+  <ul>
+    <% @data["Global Quote"].each do |key, value| %>
+      <li><%= key.gsub(/\d+\.\s/, '').titleize %>: <%= value %></li>
+    <% end %>
+  </ul>
+<% elsif @data && @data["Error Message"] %>
+  <p>Error: <%= @data["Error Message"] %></p>
+<% elsif params[:symbol] %>
+  <p>No data found for <%= @symbol %>.</p>
+<% end %>
+
